@@ -39,7 +39,9 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.get_themes_dir() .. "zenburn/theme.lua")
+local chosen_theme = "my-theme"
+local theme_path = string.format("%s/.config/awesome/themes~/%s/theme.lua", os.getenv("HOME"), chosen_theme)
+beautiful.init(theme_path)
 
 batterywidget = wibox.widget.textbox()
 batterywidget_timer = timer({timeout = 1})
@@ -240,12 +242,16 @@ root.buttons(awful.util.table.join(
 ))
 -- }}}
 
-awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("pamixer -i 10", false) end)
-awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("pamixer -d 10", false) end)
-awful.key({ }, "XF86AudioMute", function () awful.util.spawn("pamixer -t", false) end)
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("pamixer -i 10", false) end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("pamixer -d 10", false) end),
+    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("pamixer -t", false) end),
+    awful.key({ }, "XF86MonBrightnessDown", function ()
+        awful.util.spawn("xbacklight -dec 15") end),
+    awful.key({ }, "XF86MonBrightnessUp", function ()
+        awful.util.spawn("xbacklight -inc 15") end),
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
